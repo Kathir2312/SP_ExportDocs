@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -22,6 +23,8 @@ namespace SP_ExportDocs
     }
     public class DownloadTaxonomy : IDownlodTaxonomy
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         private SPSite _site = null;
         private TaxonomySession _TaxonomySession  = null;
         private string _termstoreName = "";
@@ -49,9 +52,10 @@ namespace SP_ExportDocs
                     _isValidState = true;
                 }
             }
-            catch (Exception)
+            catch (Exception w)
             {
                 _isValidState = false;
+                log.Error(string.Format("{0}.{1}", MethodBase.GetCurrentMethod().DeclaringType.FullName, MethodBase.GetCurrentMethod().Name), w);
                 throw;
             }
         }
@@ -71,9 +75,10 @@ namespace SP_ExportDocs
                 cmp.Display(1);
                 return cmp;
             }
-            catch (Exception)
+            catch (Exception w)
             {
-
+                _isValidState = false;
+                log.Error(string.Format("{0}.{1}", MethodBase.GetCurrentMethod().DeclaringType.FullName, MethodBase.GetCurrentMethod().Name), w);
                 throw;
             }
         }
@@ -88,9 +93,10 @@ namespace SP_ExportDocs
                 return tc;
 
             }
-            catch (Exception)
+            catch (Exception w)
             {
-
+                _isValidState = false;
+                log.Error(string.Format("{0}.{1}", MethodBase.GetCurrentMethod().DeclaringType.FullName, MethodBase.GetCurrentMethod().Name), w);
                 throw;
             }
         }
@@ -104,9 +110,10 @@ namespace SP_ExportDocs
                 TermSet ts = _TermStore.GetTermSet(TermsId);
                 return returnHierarchy((TermSetItem)ts, languageCode);
             }
-            catch (Exception)
+            catch (Exception w)
             {
-
+                _isValidState = false;
+                log.Error(string.Format("{0}.{1}", MethodBase.GetCurrentMethod().DeclaringType.FullName, MethodBase.GetCurrentMethod().Name), w);
                 throw;
             }
         }
@@ -132,9 +139,10 @@ namespace SP_ExportDocs
                 }
                 return retColl;
             }
-            catch (Exception)
+            catch (Exception w)
             {
-
+                _isValidState = false;
+                log.Error(string.Format("{0}.{1}", MethodBase.GetCurrentMethod().DeclaringType.FullName, MethodBase.GetCurrentMethod().Name), w);
                 throw;
             }
         }
@@ -158,9 +166,10 @@ namespace SP_ExportDocs
                 }
                 return retTerm;
             }
-            catch (Exception)
+            catch (Exception w)
             {
-
+                _isValidState = false;
+                log.Error(string.Format("{0}.{1}", MethodBase.GetCurrentMethod().DeclaringType.FullName, MethodBase.GetCurrentMethod().Name), w);
                 throw;
             }
         }
@@ -189,11 +198,11 @@ namespace SP_ExportDocs
                 //else {
                 return retTerm;
                 //}
-
             }
-            catch (Exception)
+            catch (Exception w)
             {
-
+                _isValidState = false;
+                log.Error(string.Format("{0}.{1}", MethodBase.GetCurrentMethod().DeclaringType.FullName, MethodBase.GetCurrentMethod().Name), w);
                 throw;
             }
         }
@@ -225,10 +234,11 @@ namespace SP_ExportDocs
                 }
                 return cmpRoot;
             }
-            catch (Exception ex)
+            catch (Exception w)
             {
-
-                throw ex;
+                _isValidState = false;
+                log.Error(string.Format("{0}.{1}", MethodBase.GetCurrentMethod().DeclaringType.FullName, MethodBase.GetCurrentMethod().Name), w);
+                throw;
             }
         }
 
@@ -241,9 +251,10 @@ namespace SP_ExportDocs
                 //else
                 return String.IsNullOrEmpty(term.GetDefaultLabel(languageCode))?term.Name:term.GetDefaultLabel(languageCode);
             }
-            catch (Exception)
+            catch (Exception w)
             {
-
+                _isValidState = false;
+                log.Error(string.Format("{0}.{1}", MethodBase.GetCurrentMethod().DeclaringType.FullName, MethodBase.GetCurrentMethod().Name), w);
                 throw;
             }
         }
@@ -262,7 +273,8 @@ namespace SP_ExportDocs
 
     public class ExportDocs : IExportDocs
     {
-        
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         private bool _isValidState = false;
 
         Guid _SiteId, _WebId, _ListId;
@@ -271,6 +283,7 @@ namespace SP_ExportDocs
 
         public ExportDocs(Guid SiteGuid, Guid WebGuId, Guid ListGuId, string FieldName)
         {
+            log.Info("~Export Docs()..");
             _SiteId = SiteGuid;
             _WebId = WebGuId;
             _ListId = ListGuId;
@@ -291,9 +304,9 @@ namespace SP_ExportDocs
 
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
-
+                log.Error(string.Format("{0}.{1}", MethodBase.GetCurrentMethod().DeclaringType.FullName, MethodBase.GetCurrentMethod().Name), e);
                 throw;
             }
         }
@@ -303,14 +316,16 @@ namespace SP_ExportDocs
             {
                 string SPQuery = getCAMLQuery(new[] { termsetHierarchy.wssid }, _FieldName);
                 SPListItemCollection items = getDocuments(SPQuery, _MyDocLibrary);
+                log.Info(String.Format("Query Passed==> \n{0}\nResults Count: {1}",SPQuery, items.Count));
                 foreach (SPListItem curItem in items)
                 {
+                    log.Info(String.Format("Writting File ... {0}\\{1}", LocalPathToExport, curItem.File));
                     SaveFile(curItem.File, LocalPathToExport);
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
-
+                log.Error(string.Format("{0}.{1}", MethodBase.GetCurrentMethod().DeclaringType.FullName, MethodBase.GetCurrentMethod().Name), e);
                 throw;
             }
         }
@@ -325,8 +340,9 @@ namespace SP_ExportDocs
                 bw.Close();
                 return true;
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                log.Error(string.Format("{0}.{1}", MethodBase.GetCurrentMethod().DeclaringType.FullName, MethodBase.GetCurrentMethod().Name), e);
                 throw;
             }
         }
@@ -357,36 +373,56 @@ namespace SP_ExportDocs
                 else
                 {
                     Directory.CreateDirectory(String.Format("{0}\\{1}", RootDir.FullName, cmpObj.PropName));
+                    ExportDocuments1(cmpObj, String.Format("{0}\\{1}", RootDir.FullName, cmpObj.PropName), mylist);
                 }
                 //return "" ;
             }
-            catch (Exception)
+            catch (Exception e)
             {
-
+                log.Error(string.Format("{0}.{1}", MethodBase.GetCurrentMethod().DeclaringType.FullName, MethodBase.GetCurrentMethod().Name), e);
                 throw;
             }
         }
 
         private string getCAMLQuery(int[] wssids, string metafield)
         {
-            String CAML_QUERY = @"<Where><In><FieldRef LookupId=""True"" Name=""{1}"" /><Values>{0}</Values></In></Where>";
-            String VALUES = @"<Value Type=""Lookup"">{0}</Value>";
-
-            StringBuilder strValues = new StringBuilder();
-
-            foreach (int intVal in wssids)
+            try
             {
-                strValues.AppendLine(String.Format(VALUES, intVal));
+
+                //in condition not working thus making eq statements as below
+                //String CAML_QUERY = @"<Where><In><FieldRef Name=""{1}"" LookupId=""True"" /><Values>{0}</Values></In></Where>";//Name=""{1}"" 
+                String CAML_QUERY = @"<Where><Eq><FieldRef Name=""{1}"" LookupId=""True"" />{0}</Eq></Where>";//Name=""{1}"" 
+                String VALUES = @"<Value Type=""Lookup"">{0}</Value>";
+
+                StringBuilder strValues = new StringBuilder();
+
+                foreach (int intVal in wssids)
+                {
+                    strValues.AppendLine(String.Format(VALUES, intVal));
+                }
+                String strQuery = String.Format(CAML_QUERY, strValues.ToString(), metafield);
+                return strQuery;
             }
-            String strQuery = String.Format(CAML_QUERY, strValues.ToString(), metafield);
-            return strQuery;
+            catch (Exception e)
+            {
+                log.Error(string.Format("{0}.{1}", MethodBase.GetCurrentMethod().DeclaringType.FullName, MethodBase.GetCurrentMethod().Name), e);
+                throw;
+            }
         }
 
         private SPListItemCollection getDocuments(string query, SPList _MyDocLibrary)
         {
-            SPQuery sPQuery = new SPQuery();
-            sPQuery.Query = query;
-            return _MyDocLibrary.GetItems(sPQuery);
+            try
+            {
+                SPQuery sPQuery = new SPQuery();
+                sPQuery.Query = query;
+                return _MyDocLibrary.GetItems(sPQuery);
+            }
+            catch (Exception w)
+            {
+                log.Error(string.Format("{0}.{1}", MethodBase.GetCurrentMethod().DeclaringType.FullName, MethodBase.GetCurrentMethod().Name), w);
+                throw;
+            }
         }
 
 

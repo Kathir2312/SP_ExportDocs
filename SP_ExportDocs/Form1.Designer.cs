@@ -32,8 +32,12 @@
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.treeView2 = new System.Windows.Forms.TreeView();
+            this.btnspfieldHelp = new System.Windows.Forms.Button();
+            this.picSPField = new System.Windows.Forms.PictureBox();
             this.btnTermSetIdHelp = new System.Windows.Forms.Button();
             this.btnTermstoreHelp = new System.Windows.Forms.Button();
+            this.picTermStoreName = new System.Windows.Forms.PictureBox();
+            this.picTermSetId = new System.Windows.Forms.PictureBox();
             this.btnHierarchyPopulate = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -54,21 +58,15 @@
             this.txtTermSetId = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.txtTermstoreName = new System.Windows.Forms.TextBox();
-            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
-            this.helpProvider1 = new System.Windows.Forms.HelpProvider();
-            this.picSPField = new System.Windows.Forms.PictureBox();
-            this.picTermStoreName = new System.Windows.Forms.PictureBox();
-            this.picTermSetId = new System.Windows.Forms.PictureBox();
-            this.btnspfieldHelp = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
-            this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picSPField)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picTermStoreName)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picTermSetId)).BeginInit();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // button1
@@ -101,12 +99,12 @@
             // 
             // splitContainer1.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.btnspfieldHelp);
             this.splitContainer1.Panel2.Controls.Add(this.picSPField);
+            this.splitContainer1.Panel2.Controls.Add(this.picTermSetId);
+            this.splitContainer1.Panel2.Controls.Add(this.btnspfieldHelp);
             this.splitContainer1.Panel2.Controls.Add(this.btnTermSetIdHelp);
             this.splitContainer1.Panel2.Controls.Add(this.btnTermstoreHelp);
             this.splitContainer1.Panel2.Controls.Add(this.picTermStoreName);
-            this.splitContainer1.Panel2.Controls.Add(this.picTermSetId);
             this.splitContainer1.Panel2.Controls.Add(this.btnHierarchyPopulate);
             this.splitContainer1.Panel2.Controls.Add(this.label3);
             this.splitContainer1.Panel2.Controls.Add(this.groupBox1);
@@ -138,6 +136,27 @@
             this.treeView2.Size = new System.Drawing.Size(569, 1060);
             this.treeView2.TabIndex = 0;
             // 
+            // btnspfieldHelp
+            // 
+            this.btnspfieldHelp.Location = new System.Drawing.Point(567, 216);
+            this.btnspfieldHelp.Name = "btnspfieldHelp";
+            this.btnspfieldHelp.Size = new System.Drawing.Size(26, 23);
+            this.btnspfieldHelp.TabIndex = 29;
+            this.btnspfieldHelp.Text = "...";
+            this.btnspfieldHelp.UseVisualStyleBackColor = true;
+            this.btnspfieldHelp.Click += new System.EventHandler(this.btnspfieldHelp_Click);
+            // 
+            // picSPField
+            // 
+            this.picSPField.Image = global::SP_ExportDocs.imgs.imgFieldNameId;
+            this.picSPField.Location = new System.Drawing.Point(16, 350);
+            this.picSPField.Name = "picSPField";
+            this.picSPField.Size = new System.Drawing.Size(787, 639);
+            this.picSPField.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.picSPField.TabIndex = 28;
+            this.picSPField.TabStop = false;
+            this.picSPField.Visible = false;
+            // 
             // btnTermSetIdHelp
             // 
             this.btnTermSetIdHelp.Location = new System.Drawing.Point(567, 73);
@@ -157,6 +176,26 @@
             this.btnTermstoreHelp.Text = "...";
             this.btnTermstoreHelp.UseVisualStyleBackColor = true;
             this.btnTermstoreHelp.Click += new System.EventHandler(this.btnTermstoreHelp_Click);
+            // 
+            // picTermStoreName
+            // 
+            this.picTermStoreName.Image = global::SP_ExportDocs.imgs.imgtermstore;
+            this.picTermStoreName.Location = new System.Drawing.Point(16, 348);
+            this.picTermStoreName.Name = "picTermStoreName";
+            this.picTermStoreName.Size = new System.Drawing.Size(326, 330);
+            this.picTermStoreName.TabIndex = 25;
+            this.picTermStoreName.TabStop = false;
+            this.picTermStoreName.Visible = false;
+            // 
+            // picTermSetId
+            // 
+            this.picTermSetId.Image = global::SP_ExportDocs.imgs.imgtermset;
+            this.picTermSetId.Location = new System.Drawing.Point(16, 348);
+            this.picTermSetId.Name = "picTermSetId";
+            this.picTermSetId.Size = new System.Drawing.Size(759, 700);
+            this.picTermSetId.TabIndex = 24;
+            this.picTermSetId.TabStop = false;
+            this.picTermSetId.Visible = false;
             // 
             // btnHierarchyPopulate
             // 
@@ -331,46 +370,6 @@
             this.txtTermstoreName.Size = new System.Drawing.Size(330, 20);
             this.txtTermstoreName.TabIndex = 1;
             // 
-            // picSPField
-            // 
-            this.picSPField.Image = global::SP_ExportDocs.imgs.imgFieldNameId;
-            this.picSPField.Location = new System.Drawing.Point(-132, 294);
-            this.picSPField.Name = "picSPField";
-            this.picSPField.Size = new System.Drawing.Size(1161, 838);
-            this.picSPField.TabIndex = 28;
-            this.picSPField.TabStop = false;
-            this.picSPField.Visible = false;
-            // 
-            // picTermStoreName
-            // 
-            this.picTermStoreName.Image = global::SP_ExportDocs.imgs.imgtermstore;
-            this.picTermStoreName.Location = new System.Drawing.Point(18, 474);
-            this.picTermStoreName.Name = "picTermStoreName";
-            this.picTermStoreName.Size = new System.Drawing.Size(326, 330);
-            this.picTermStoreName.TabIndex = 25;
-            this.picTermStoreName.TabStop = false;
-            this.picTermStoreName.Visible = false;
-            // 
-            // picTermSetId
-            // 
-            this.picTermSetId.Image = global::SP_ExportDocs.imgs.imgtermset;
-            this.picTermSetId.Location = new System.Drawing.Point(18, 294);
-            this.picTermSetId.Name = "picTermSetId";
-            this.picTermSetId.Size = new System.Drawing.Size(759, 700);
-            this.picTermSetId.TabIndex = 24;
-            this.picTermSetId.TabStop = false;
-            this.picTermSetId.Visible = false;
-            // 
-            // btnspfieldHelp
-            // 
-            this.btnspfieldHelp.Location = new System.Drawing.Point(567, 216);
-            this.btnspfieldHelp.Name = "btnspfieldHelp";
-            this.btnspfieldHelp.Size = new System.Drawing.Size(26, 23);
-            this.btnspfieldHelp.TabIndex = 29;
-            this.btnspfieldHelp.Text = "...";
-            this.btnspfieldHelp.UseVisualStyleBackColor = true;
-            this.btnspfieldHelp.Click += new System.EventHandler(this.btnspfieldHelp_Click);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -385,11 +384,11 @@
             this.splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picSPField)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picTermStoreName)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picTermSetId)).EndInit();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -415,7 +414,6 @@
         private System.Windows.Forms.Label lblExportPath;
         private System.Windows.Forms.Button btnSelectPath;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
         private System.Windows.Forms.TreeView treeView2;
         private System.Windows.Forms.RadioButton rdoArabic;
@@ -424,7 +422,6 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button btnHierarchyPopulate;
         private System.Windows.Forms.PictureBox picTermSetId;
-        private System.Windows.Forms.HelpProvider helpProvider1;
         private System.Windows.Forms.Button btnTermstoreHelp;
         private System.Windows.Forms.PictureBox picTermStoreName;
         private System.Windows.Forms.Button btnTermSetIdHelp;

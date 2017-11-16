@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -17,9 +19,11 @@ namespace SP_ExportDocs
         private string SITEGUID = "79d17e9d-84c8-4fcd-be6a-26a05590c28e";
         private string WEBGUID = "45632176-0a7d-4d98-88ca-b51e2e79c6e3";//"8a8ac521-bab0-4df4-a98f-e2714a5df927"
         private string LISTGUID = "b9f7a85e-cb35-4645-bae0-5c70b4a9494b";//"57760c8a-7d86-4f4c-b399-56d6205d5aaa";
-        private string FieldName = "Document_0X200_Type";
+        private string FieldName = "Document_x0020_Type";
         private string FILE_PATH = @"F:\IALEG";
         private int languageCode = 1033;
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         public Form1()
         {
             InitializeComponent();
@@ -29,24 +33,29 @@ namespace SP_ExportDocs
         {
             try
             {
+                log.Info("************************************************************************    INTITIATED EXPORT ************************************");
+                treeView2.Nodes.Clear();
                 assingtoConstants();
                 IDownlodTaxonomy objDDl;
                 Composite objCmp;
                 IExportDocs objEXP;
                 objDDl = new DownloadTaxonomy(new Guid(SITEGUID), TERMSTORE_NAME, new Guid(TERMSET_ID));
-                objEXP = new ExportDocs(new Guid(SITEGUID), new Guid(WEBGUID), new Guid(LISTGUID), FieldName);
+                
+                    objEXP = new ExportDocs(new Guid(SITEGUID), new Guid(WEBGUID), new Guid(LISTGUID), FieldName);
 
                 if (objDDl.isValidState)
                 {
                     objCmp = objDDl.getTaxonomy(languageCode);
+                    log.Info(objCmp.CMChilds);
                     treeView2.Nodes.Add(bindHierarchy(objCmp));
                     objEXP.ExportDocuments(objCmp,FILE_PATH);
 
                 }
+                log.Info("************************************************************************    Completed EXPORT ************************************"); 
             }
-            catch (Exception)
+            catch (Exception w)
             {
-
+                log.Error(string.Format("{0}.{1}", MethodBase.GetCurrentMethod().DeclaringType.FullName, MethodBase.GetCurrentMethod().Name), w);
                 throw;
             }
         }
@@ -55,19 +64,23 @@ namespace SP_ExportDocs
         {
             try
             {
+                treeView2.Nodes.Clear();
                 assingtoConstants();
                 IDownlodTaxonomy objDDl;
                 Composite objCmp;
                 objDDl = new DownloadTaxonomy(new Guid(SITEGUID), TERMSTORE_NAME, new Guid(TERMSET_ID));
                 if (objDDl.isValidState)
                 {
+                    log.Info("Inovkiing");
+                    
                     objCmp = objDDl.getTaxonomy(languageCode);
+                    log.Info(objCmp.CMChilds);
                     treeView2.Nodes.Add(bindHierarchy(objCmp));
                 }
             }
-            catch (Exception)
+            catch (Exception w)
             {
-
+                log.Error(string.Format("{0}.{1}", MethodBase.GetCurrentMethod().DeclaringType.FullName, MethodBase.GetCurrentMethod().Name), w);
                 throw;
             }
         }
@@ -85,9 +98,9 @@ namespace SP_ExportDocs
                 FILE_PATH = lblExportPath.Text;
                 //languageCode
             }
-            catch (Exception)
+            catch (Exception w)
             {
-
+                log.Error(string.Format("{0}.{1}", MethodBase.GetCurrentMethod().DeclaringType.FullName, MethodBase.GetCurrentMethod().Name), w);
                 throw;
             }
         }
@@ -104,13 +117,13 @@ namespace SP_ExportDocs
                 txtFieldID.Text = FieldName;
                 rdoENglish.Checked = languageCode == 1033 ? true : false;
                // rdoArabic.Checked = !(rdoENglish.Checked);
-                FILE_PATH = folderBrowserDialog1.SelectedPath.ToString();
                 lblExportPath.Text = FILE_PATH;
+                folderBrowserDialog1.SelectedPath = FILE_PATH;
                 //languageCode
             }
-            catch (Exception)
+            catch (Exception w)
             {
-
+                log.Error(string.Format("{0}.{1}", MethodBase.GetCurrentMethod().DeclaringType.FullName, MethodBase.GetCurrentMethod().Name), w);
                 throw;
             }
         }
@@ -145,11 +158,11 @@ namespace SP_ExportDocs
                 }
                 return tn;    
             }
-                //return cmpRoot;
-            catch (Exception ex)
+            //return cmpRoot;
+            catch (Exception w)
             {
-
-                throw ex;
+                log.Error(string.Format("{0}.{1}", MethodBase.GetCurrentMethod().DeclaringType.FullName, MethodBase.GetCurrentMethod().Name), w);
+                throw;
             }
         }
 
@@ -172,9 +185,9 @@ namespace SP_ExportDocs
                 DialogResult dr = folderBrowserDialog1.ShowDialog();
                 lblExportPath.Text = folderBrowserDialog1.SelectedPath.ToString();
             }
-            catch (Exception)
+            catch (Exception w)
             {
-
+                log.Error(string.Format("{0}.{1}", MethodBase.GetCurrentMethod().DeclaringType.FullName, MethodBase.GetCurrentMethod().Name), w);
                 throw;
             }
         }
@@ -185,12 +198,15 @@ namespace SP_ExportDocs
             {
                 assingtoUI();
             }
-            catch (Exception)
+            catch (Exception w)
             {
-
+                log.Error(string.Format("{0}.{1}", MethodBase.GetCurrentMethod().DeclaringType.FullName, MethodBase.GetCurrentMethod().Name), w);
                 throw;
             }
         }
+
+      
+        
 
         private void btnTermSetIdHelp_Click(object sender, EventArgs e)
         {
@@ -208,5 +224,6 @@ namespace SP_ExportDocs
         {
             picSPField.Visible = !picSPField.Visible;
         }
+
     }
 }
